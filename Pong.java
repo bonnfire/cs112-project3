@@ -165,8 +165,8 @@
             }
         }
 
-        public OOBouncing(){
-            world = new World(WIDTH, HEIGHT, 50);
+        public Pong(){
+            world = new World(WIDTH, HEIGHT, 1);
             this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
             Thread mainThread = new Thread(new Runner());
             mainThread.start();
@@ -175,7 +175,7 @@
         public static void main(String[] args){
             JFrame frame = new JFrame("Physics!!!");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            OOBouncing mainInstance = new OOBouncing();
+            Pong mainInstance = new Pong();
             frame.setContentPane(mainInstance);
             frame.pack();
             frame.setVisible(true);
