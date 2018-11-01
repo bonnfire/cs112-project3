@@ -33,10 +33,10 @@
         this.x = this.x;
         this.y = - this.y;
       }
-      public Pair divide(double d){
+      public Pair divide(double e){
         Pair pair = new Pair(0, 0);
-        pair.x = this.x / d;
-        pair.y = this.y / d;
+        pair.x = this.x / e;
+        pair.y = this.y / e;
         return pair;
       }
     }
