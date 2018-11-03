@@ -46,7 +46,11 @@
         Pair velocity;
         Pair acceleration;
         double radius;
-        double dampening;
+        double score1;
+        double score2;
+        // double dampening;
+        double PlatformX;
+        double PlatformY;
         Color color;
         public Sphere()
         {
@@ -55,7 +59,7 @@
             velocity = new Pair((double)(rand.nextInt(1000) - 500), (double)(rand.nextInt(1000) - 500));
             acceleration = new Pair(0.0, 200.0);
             radius = 25;
-            dampening = 1.1;
+            //dampening = 1.1;
             color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
         }
 
@@ -85,8 +89,45 @@
             g.setColor(c);
         }
 
+        public void score(World w){
+          int score1 = 0;
+          int score2 = 0;
+          Boolean bounced = false;
+          if (position.x - radius < 0){
+              velocity.flipX();
+              position.x = radius;
+              score1 = score1 + 1;
+              System.out.println("The score is" + score1);
+              bounced = true;
+          }
+          else if (position.x + radius > w.width){
+              velocity.flipX();
+              position.x = w.width - radius;
+              score2 = score1 + 1;
+              System.out.println("The score is" + score2);
+              bounced = true;
+          }
+          if (position.y - radius < 0){
+              velocity.flipY();
+              position.y = radius;
+              score1 = score1 + 1;
+              System.out.println("The score is" + score1);
+              bounced = true;
+          }
+          else if(position.y + radius >  w.height){
+              velocity.flipY();
+              position.y = w.height - radius;
+              score1 = score1 + 1;
+              System.out.println("The score is" + score1);
+              bounced = true;
+          }
+
+
+        }
+
         private void bounce(World w){
             Boolean bounced = false;
+            // when the ball hits the platform
             if (position.x - radius < 0){
                 velocity.flipX();
                 position.x = radius;
@@ -107,9 +148,10 @@
                 position.y = w.height - radius;
                 bounced = true;
             }
-            if (bounced){
-                velocity = velocity.divide(dampening);
-            }
+
+            //if (bounced){
+            //    velocity = velocity.divide(dampening);
+            //}
         }
     }
 
@@ -149,6 +191,8 @@
     public class Pong extends JPanel{
         public static final int WIDTH = 1024;
         public static final int HEIGHT = 768;
+        public static final int PLATWIDTH = 50;
+        public static final int PLATHEIGHT = 100;
         public static final int FPS = 60;
         World world;
 
@@ -185,6 +229,9 @@
             super.paintComponent(g);
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, WIDTH, HEIGHT);
+            g.setColor(Color.WHITE);
+            g.fillRect(0, HEIGHT/2, PLATWIDTH, PLATHEIGHT);
+            g.fillRect(WIDTH-PLATWIDTH, HEIGHT/2, PLATWIDTH, PLATHEIGHT);
             world.drawSpheres(g);
         }
     }
