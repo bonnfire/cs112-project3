@@ -46,12 +46,12 @@
         Pair velocity;
         Pair acceleration;
         double radius;
-        double score1;
-        double score2;
+        int score1;
+        int score2;
         // double dampening;
-        double PlatformX;
-        double PlatformY;
+
         Color color;
+
         public Sphere()
         {
             Random rand = new Random();
@@ -66,6 +66,7 @@
         public void update(World w, double time){
             position = position.add(velocity.times(time));
             velocity = velocity.add(acceleration.times(time));
+            score(w);
             bounce(w);
         }
 
@@ -90,54 +91,42 @@
         }
 
         public void score(World w){
-          int score1 = 0;
-          int score2 = 0;
           Boolean bounced = false;
           if (position.x - radius < 0){
               velocity.flipX();
               position.x = radius;
               score1 = score1 + 1;
-              System.out.println("The score is" + score1);
+              System.out.println("Player 1's score is " + score1);
               bounced = true;
           }
           else if (position.x + radius > w.width){
               velocity.flipX();
               position.x = w.width - radius;
-              score2 = score1 + 1;
-              System.out.println("The score is" + score2);
+              score2 = score2 + 1;
+              System.out.println("Player 2's score is " + score2);
               bounced = true;
           }
-          if (position.y - radius < 0){
-              velocity.flipY();
-              position.y = radius;
-              score1 = score1 + 1;
-              System.out.println("The score is" + score1);
-              bounced = true;
-          }
-          else if(position.y + radius >  w.height){
-              velocity.flipY();
-              position.y = w.height - radius;
-              score1 = score1 + 1;
-              System.out.println("The score is" + score1);
-              bounced = true;
-          }
+      }
 
-
-        }
 
         private void bounce(World w){
+          //Include the Rectangle class
+          // BAD CODE BELOW
             Boolean bounced = false;
-            // when the ball hits the platform
-            if (position.x - radius < 0){
+
+            if (position.x - 50 - radius < 0 && position.y - 100 - radius < 0){
                 velocity.flipX();
-                position.x = radius;
+                position.x = radius - 50;
+                position.y = radius - 100;
                 bounced = true;
             }
-            else if (position.x + radius > w.width){
+            else if (position.x + 50 + radius > w.width && position.y + 100 + radius > w.width){
                 velocity.flipX();
-                position.x = w.width - radius;
+                position.x = w.width - radius - 50;
+                position.y = w.width - radius - 100;
                 bounced = true;
             }
+
             if (position.y - radius < 0){
                 velocity.flipY();
                 position.y = radius;
@@ -147,13 +136,13 @@
                 velocity.flipY();
                 position.y = w.height - radius;
                 bounced = true;
-            }
+          }
 
             //if (bounced){
             //    velocity = velocity.divide(dampening);
             //}
         }
-    }
+    } // class Sphere
 
     class World{
         int height;
@@ -230,6 +219,9 @@
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, WIDTH, HEIGHT);
             g.setColor(Color.WHITE);
+            for(int i = 0; i < HEIGHT; i = i + 50){
+              g.fillRect(WIDTH/2, i, 5, 10);
+            }
             g.fillRect(0, HEIGHT/2, PLATWIDTH, PLATHEIGHT);
             g.fillRect(WIDTH-PLATWIDTH, HEIGHT/2, PLATWIDTH, PLATHEIGHT);
             world.drawSpheres(g);
